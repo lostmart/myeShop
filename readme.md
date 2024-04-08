@@ -25,7 +25,35 @@ Ensure you have the following installed:
 ### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/lostmart/myeShop.git
-   cd myeShop
-   ```
+
+```bash
+git clone https://github.com/lostmart/myeShop.git
+cd myeShop
+```
+
+2. Install NPM packages:
+
+```bash
+npm install
+```
+
+3. Create a .env file in the root directory and populate it with necessary environment variables:
+
+```makefile
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+PORT=4000
+```
+
+4. Compile TypeScript to JavaScript and start the server:
+
+```bash
+npm run build
+npm start
+```
+
+NOTE: Alternatively, for development purposes, you can run the TypeScript compiler in watch mode and start the server with nodemon:
+
+```bash
+npm run dev
+```
