@@ -4,16 +4,12 @@ dotenv.config()
 
 const connectToMongoDB = async (): Promise<void> => {
 	try {
-		const connectionString: string | undefined = "mongodb://localhost:27017"
+		const connectionString: string | undefined = process.env.DB_LOCAL
 		if (!connectionString) {
-			throw new Error(
-				"Database connection string is not defined in the environment variables."
-			)
+			throw new Error("Database connection string cant, you know ...")
 		}
 
-		await mongoose.connect(connectionString, {
-			useUnifiedTopology: true,
-		})
+		await mongoose.connect(connectionString)
 
 		console.log("Connected to MongoDB")
 	} catch (error) {
