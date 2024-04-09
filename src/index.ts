@@ -3,22 +3,14 @@ import express from "express"
 const app = express()
 const PORT = process.env.PORT || 3000
 
-const mongoose = require("mongoose")
+import dotenv from "dotenv"
+dotenv.config()
 
-async function connectToMongoDB() {
-	try {
-		const connectionString = process.env.DB_LOCAL
+// const connectToMongoDB = require("./utils/db_connection")
 
-		await mongoose.connect(connectionString, {
-			useNewUrlParser: true,
-		})
 
-		console.log("Connected to MongoDB")
-	} catch (error) {
-		console.error("Error connecting to MongoDB:", error.message)
-		throw error
-	}
-}
+
+import connectToMongoDB from "./utils/db_connection"
 
 /*  CORS  */
 app.use((req, res, next) => {
@@ -44,7 +36,7 @@ app.get("/", (req, res) =>
 async function startApp() {
 	try {
 		await connectToMongoDB()
-	} catch (error) {
+	} catch (error: any) {
 		console.error("Failed to start the application:", error.message)
 		process.exit(1)
 	}
