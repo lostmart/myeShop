@@ -6,8 +6,8 @@ const PORT = process.env.PORT || 3000
 import dotenv from "dotenv"
 dotenv.config()
 
-// const connectToMongoDB = require("./utils/db_connection")
-
+/*  routes import */
+import productsRoutes from "./routes/ProductRoutes"
 
 
 import connectToMongoDB from "./utils/db_connection"
@@ -43,6 +43,8 @@ async function startApp() {
 }
 
 startApp()
+
+app.use("/api/products", productsRoutes)
 
 app.listen(PORT, () => {
 	console.log(`Server is running at http://localhost:${PORT}`)
