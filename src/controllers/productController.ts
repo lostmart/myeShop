@@ -2,6 +2,8 @@ import { Request, Response } from "express"
 import Product from "../models/ProductModel"
 import IMessage from "../interfaces/MessageInterface"
 
+import fs from "fs"
+
 /* get a list of all the products */
 export const getAllProducts = async (req: Request, res: Response) => {
 	const products = await Product.find()
@@ -104,4 +106,42 @@ export const newProduct = async (req: any, res: Response, next: Function) => {
 	})
 
 	next()
+}
+
+/* delete one product by Id */
+export const deleteById = async (req: Request, res: Response): Promise<any> => {
+	const productId = req.params.productId
+
+	try {
+		const tryProduct = await Product.findOne({ _id: productId })
+
+		if (!tryProduct) {
+			return res.status(404).json({ msg: "nothing found with this id" })
+		}
+
+		tryProduct.productImages.forEach((img: string) => {
+			// delete images
+			const filename = img.split("/images/")[1]
+			fs.unlink(`images/${filename}`, () => {
+				console.log(`image ${filename} deleted`)
+			})
+		})
+
+		const foundProduct = await Product.deleteOne({ _id: productId })
+
+		if (foundProduct.acknowledged) {
+			res.status(200).json({
+				msg: "Product deleted",
+				id: `Product id: ${productId}`,
+			})
+		} else {
+			res.status(500).json({
+				msg: "Something went terribly wrong !",
+			})
+		}
+	} catch (err: any) {
+		res.status(500).json({
+			msg: err.message,
+		})
+	}
 }
