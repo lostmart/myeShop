@@ -30,7 +30,6 @@ app.use((req: Request, res: Response, next: Function) => {
 app.use(express.json())
 app.disable("x-powered-by")
 
-
 app.get("/", (req: Request, res: Response) =>
 	res.json({ msg: "Hello World with Express and TypeScript" })
 )
@@ -49,7 +48,7 @@ startApp()
 app.use("/api/products", productsRoutes)
 
 /* static folder */
-app.use("/images", express.static(path.join(__dirname, "images")))
+app.use("/images", express.static(path.join(__dirname, "../images")))
 
 app.listen(PORT, () => {
 	console.log(`Server is running at http://localhost:${PORT}`)

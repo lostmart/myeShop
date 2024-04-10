@@ -59,12 +59,17 @@ export const getProductsByTag = async (req: Request, res: Response) => {
 }
 
 /* create new product  */
-export const newProduct = async (
-	req: Request,
-	res: Response,
-	next: Function
-) => {
-	console.log(req.files)
+export const newProduct = async (req: any, res: Response, next: Function) => {
+	let productImages: string[] = []
+	if (req.files) {
+		productImages = req.files.map((img: any) => {
+			return `${req.protocol}://${req.get("host")}/images/${img.filename}`
+		})
+		// console.log(typeof req.files[0])
+		// for (let index = 0; index < req.files.length; index++) {
+		// 	const element = req.files[index]
+		// }
+	}
 
 	// prepare data
 	// const productImages = req.files.map((img) => {
@@ -72,7 +77,7 @@ export const newProduct = async (
 	// })
 	// console.log(req.get("host"))
 	// start msg and status variables
-	const productImages = ["1", "2", "3"]
+	// const productImages = ["1", "2", "3"]
 	const msg: IMessage = { data: "", name: "" }
 	//let msg: any
 	let statusCode = 200
