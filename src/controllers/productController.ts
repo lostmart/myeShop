@@ -1,10 +1,9 @@
 import { Request, Response } from "express"
 import Product from "../models/ProductModel"
+import IMessage from "../interfaces/MessageInterface"
 
 /* get a list of all the products */
 export const getAllProducts = async (req: Request, res: Response) => {
-	console.log(req)
-
 	const products = await Product.find()
 	if (products.length < 1) {
 		return res.status(404).json({
@@ -60,14 +59,21 @@ export const getProductsByTag = async (req: Request, res: Response) => {
 }
 
 /* create new product  */
-exports.newProduct = async (req: Request, res: Response, next: Function) => {
+export const newProduct = async (
+	req: Request,
+	res: Response,
+	next: Function
+) => {
+	console.log(req)
+
 	// prepare data
 	// const productImages = req.files.map((img) => {
 	// 	return `${req.protocol}://${req.get("host")}/images/${img.filename}`
 	// })
 	// console.log(req.get("host"))
 	// start msg and status variables
-	let msg = ""
+	const msg: IMessage = { data: "", name: "" }
+	//let msg: any
 	let statusCode = 200
 	try {
 		const newProduct = new Product({
@@ -77,12 +83,13 @@ exports.newProduct = async (req: Request, res: Response, next: Function) => {
 		// newProduct.productImages = productImages
 		const savedProduct = await newProduct.save()
 
-		msg = "good !"
+		// msg = "good !"
 		statusCode = 201
-	} catch (err) {
-		console.log(err)
-		msg = "bad !!"
-		statusCode = 500
+	} catch (err: any) {
+		msg.data = err.message
+		msg.name = err.name
+		msg.error = err.errors
+		statusCode = 400
 	}
 
 	res.status(statusCode).json({
