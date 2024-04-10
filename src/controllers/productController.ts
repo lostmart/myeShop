@@ -64,14 +64,15 @@ export const newProduct = async (
 	res: Response,
 	next: Function
 ) => {
-	console.log(req)
+	console.log(req.files)
 
 	// prepare data
 	// const productImages = req.files.map((img) => {
-	// 	return `${req.protocol}://${req.get("host")}/images/${img.filename}`
+	// return `${req.protocol}://${req.get("host")}/images/${img.filename}`
 	// })
 	// console.log(req.get("host"))
 	// start msg and status variables
+	const productImages = ["1", "2", "3"]
 	const msg: IMessage = { data: "", name: "" }
 	//let msg: any
 	let statusCode = 200
@@ -80,10 +81,11 @@ export const newProduct = async (
 			...req.body,
 		})
 
-		// newProduct.productImages = productImages
+		newProduct.productImages = productImages
 		const savedProduct = await newProduct.save()
 
-		// msg = "good !"
+		msg.name = savedProduct
+		msg.data = "Product successfully created !"
 		statusCode = 201
 	} catch (err: any) {
 		msg.data = err.message

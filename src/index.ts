@@ -30,9 +30,6 @@ app.use((req: Request, res: Response, next: Function) => {
 app.use(express.json())
 app.disable("x-powered-by")
 
-interface IError {
-	message: string
-}
 
 app.get("/", (req: Request, res: Response) =>
 	res.json({ msg: "Hello World with Express and TypeScript" })

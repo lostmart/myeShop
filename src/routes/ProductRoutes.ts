@@ -1,4 +1,5 @@
 import express from "express"
+import { uploadArray } from "../middleware/uploadArray"
 const router = express.Router()
 
 import {
@@ -15,4 +16,4 @@ router.get("/:productId", getOneProductById)
 export default router
 
 /*  create a product  authMiddleware, */
-router.post("/", newProduct)
+router.post("/", uploadArray, newProduct)
